@@ -2,10 +2,68 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Página Web</title>
+    <title>Generador de Contraseñas</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        button { padding: 10px; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <h1>¡Bienvenido a mi página web!</h1>
-    <p>Este es un sitio web creado con HTML.</p>
+
+    <h1>Generador de Contraseñas</h1>
+    <label for="length">Longitud:</label>
+    <input type="number" id="length" min="8" max="64" value="12">
+    
+    <div>
+        <input type="checkbox" id="uppercase" checked> Mayúsculas
+        <input type="checkbox" id="lowercase" checked> Minúsculas
+        <input type="checkbox" id="numbers" checked> Números
+        <input type="checkbox" id="symbols" checked> Símbolos
+    </div>
+
+    <button onclick="generarContrasena()">Generar Contraseña</button>
+    
+    <h2>Contraseña:</h2>
+    <input type="text" id="password" readonly>
+    <button onclick="copiarContrasena()">Copiar</button>
+
+    <script>
+        function generarContrasena() {
+            let longitud = document.getElementById("length").value;
+            let usarMayusculas = document.getElementById("uppercase").checked;
+            let usarMinusculas = document.getElementById("lowercase").checked;
+            let usarNumeros = document.getElementById("numbers").checked;
+            let usarSimbolos = document.getElementById("symbols").checked;
+
+            let caracteres = "";
+            if (usarMayusculas) caracteres += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (usarMinusculas) caracteres += "abcdefghijklmnopqrstuvwxyz";
+            if (usarNumeros) caracteres += "0123456789";
+            if (usarSimbolos) caracteres += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+            if (caracteres === "") {
+                alert("Debes seleccionar al menos un tipo de carácter.");
+                return;
+            }
+
+            let contrasena = "";
+            for (let i = 0; i < longitud; i++) {
+                contrasena += caracteres[Math.floor(Math.random() * caracteres.length)];
+            }
+
+            document.getElementById("password").value = contrasena;
+        }
+
+        function copiarContrasena() {
+            let contrasena = document.getElementById("password").value;
+            if (contrasena) {
+                navigator.clipboard.writeText(contrasena);
+                alert("Contraseña copiada al portapapeles!");
+            } else {
+                alert("Genera una contraseña primero.");
+            }
+        }
+    </script>
+
 </body>
 </html>
